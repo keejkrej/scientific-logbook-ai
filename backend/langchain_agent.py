@@ -21,11 +21,11 @@ load_dotenv()
 class LMStudioChat(LLM):
     """LangChain-compatible wrapper for LM Studio API"""
     
-    base_url: str = "http://192.168.3.4:1234"
+    base_url: str = "http://127.0.0.1:1234"
     model: str = "gemma-3-12b"
     temperature: float = 0.1
     
-    def __init__(self, base_url: str = "http://192.168.3.4:1234", model: str = "gemma-3-12b", temperature: float = 0.1, **kwargs):
+    def __init__(self, base_url: str = "http://127.0.0.1:1234", model: str = "gemma-3-12b", temperature: float = 0.1, **kwargs):
         super().__init__(**kwargs)
         self.base_url = base_url.rstrip('/')
         self.model = model
@@ -200,7 +200,7 @@ class ScientificLogbookAgent:
         
         if model_type == "local":
             self.llm = LMStudioChat(
-                base_url="http://192.168.3.4:1234",
+                base_url="http://127.0.0.1:1234",
                 model="gemma-3-12b",
                 temperature=0.1
             )

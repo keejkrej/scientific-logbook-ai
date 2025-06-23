@@ -31,6 +31,7 @@ export default function Home() {
   const [selectedUser, setSelectedUser] = useState('all');
   const [summary, setSummary] = useState('');
   const [summaryLoading, setSummaryLoading] = useState(false);
+  const [summaryUserFilter, setSummaryUserFilter] = useState('all');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showAddUser, setShowAddUser] = useState(false);
@@ -94,7 +95,8 @@ export default function Home() {
   const fetchSummary = async () => {
     setSummaryLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/summary`);
+      const url = `${API_BASE}/summary${summaryUserFilter !== 'all' ? `?user_filter=${summaryUserFilter}` : ''}`;
+      const res = await fetch(url);
       const data = await res.json();
       setSummary(data.summary);
     } catch {
@@ -631,31 +633,49 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {!summary ? (
-                    <div className="text-center py-12">
-                      <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">Generate Research Summary</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Get an AI-powered analysis of recent scientific activities and insights
-                      </p>
-                      <Button
-                        onClick={fetchSummary}
-                        disabled={summaryLoading}
-                        size="lg"
-                      >
-                        {summaryLoading ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Generating summary...
-                          </>
-                        ) : (
-                          <>
-                            <TrendingUp className="mr-2 h-4 w-4" />
-                            Generate Summary
-                          </>
-                        )}
-                      </Button>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="summary-user-filter">Filter by User (optional)</Label>
+                        <Select value={summaryUserFilter} onValueChange={setSummaryUserFilter}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="All users" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All users</SelectItem>
+                            {users.map((user) => (
+                              <SelectItem key={user} value={user}>{user}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
+
+                    {!summary ? (
+                      <div className="text-center py-12">
+                        <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">Generate Research Summary</h3>
+                        <p className="text-muted-foreground mb-6">
+                          Get an AI-powered analysis of recent scientific activities and insights
+                        </p>
+                        <Button
+                          onClick={fetchSummary}
+                          disabled={summaryLoading}
+                          size="lg"
+                        >
+                          {summaryLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Generating summary...
+                            </>
+                          ) : (
+                            <>
+                              <TrendingUp className="mr-2 h-4 w-4" />
+                              Generate Summary
+                            </>
+                          )}
+                        </Button>
+                      </div>
                   ) : (
                     <div>
                       <div className="mb-6 p-4 bg-muted/50 rounded-lg">
@@ -682,7 +702,8 @@ export default function Home() {
                         )}
                       </Button>
                     </div>
-                  )}
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

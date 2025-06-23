@@ -273,29 +273,29 @@ class ScientificLogbookAgent:
             Generate a comprehensive summary of scientific activities based on the following logbook data:
 
             Statistics:
-            - Total entries: {total_entries}
+            - Total entries analyzed: {total_entries}
             - Active researchers: {authors}
-            - Recent entries (last 30 days): {recent_entries}
+            - Latest entries (up to 5 most recent): {recent_entries}
             - Total experiments: {total_experiments}
             - Total results: {total_results}
 
-            Recent entries sample:
+            Latest entries sample:
             {entries}
 
             Please provide a well-structured summary that includes:
-            1. Overview of research activity levels
-            2. Key research areas and trends
+            1. Overview of recent research activity
+            2. Key research areas and trends from the latest work
             3. Individual researcher contributions
             4. Notable experiments and findings
             5. Recommendations for future work
 
-            Keep the summary concise but informative.
+            Focus on the most recent activities and keep the summary concise but informative.
             """
         )
         
-        # Prepare sample entries for context
+        # Prepare sample entries for context (limited to available entries)
         sample_entries = []
-        for entry in recent_entries[:5]:
+        for entry in entries[:5]:  # Use the entries passed in (already limited to 5)
             sample_entries.append({
                 "author": entry['author'],
                 "date": entry['date'],

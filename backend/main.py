@@ -103,10 +103,19 @@ async def add_user(request: AddUserRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/summary")
-async def get_summary():
+async def get_summary(user_filter: Optional[str] = None):
     """Get a summary of recent scientific activities"""
     try:
         entries = parser.parse_all_logbooks()
+        
+        # Filter by user if specified
+        if user_filter:
+            entries = [entry for entry in entries if entry['author'].lower() == user_filter.lower()]
+        
+        # Sort by date (newest first) and limit to latest 5 entries to save tokens
+        entries.sort(key=lambda x: x['date'], reverse=True)
+        entries = entries[:5]
+        
         summary = agent.generate_summary(entries)
         return {"summary": summary}
     except Exception as e:

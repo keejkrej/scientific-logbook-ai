@@ -29,7 +29,7 @@ export default function AddEntry() {
   const [newUserName, setNewUserName] = useState('');
   const [addUserLoading, setAddUserLoading] = useState(false);
 
-  const API_BASE = 'http://localhost:8000';
+  const API_BASE = '/api';
 
   useEffect(() => {
     fetchUsers();

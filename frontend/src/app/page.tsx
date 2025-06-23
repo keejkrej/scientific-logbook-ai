@@ -12,7 +12,6 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Loader2, Search, Users, FileText, TrendingUp, Plus, UserPlus, Database, BarChart3, Wand2, Check, Cpu, Cloud } from 'lucide-react';
-import Link from 'next/link';
 import { MarkdownRenderer } from '@/components/markdown-renderer';
 
 interface LogbookEntry {
@@ -53,7 +52,7 @@ export default function Home() {
   const [currentModel, setCurrentModel] = useState('openai');
   const [modelSwitching, setModelSwitching] = useState(false);
 
-  const API_BASE = 'http://localhost:8000';
+  const API_BASE = '/api';
 
   useEffect(() => {
     fetchEntries();
